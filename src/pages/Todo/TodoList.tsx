@@ -114,7 +114,7 @@ export function TodoListPage() {
     const handleLogout = () => {
         // Lógica para logout
         window.localStorage.removeItem("MY_TOKEN");
-        navigate("/"); // Redireciona para a página de login
+        navigate("/"); // Redirect to login page
     };
 
     return (
