@@ -69,6 +69,10 @@ export function TodoListPage() {
         setIsLoading(true);
         setLoadingTodoId(todo.id);
 
+        const token = window.localStorage.getItem("MY_TOKEN");
+        if (!token)
+            return;
+
         try {
             const response = await axios.put(`${process.env.REACT_APP_API_URL}/todos/${todo.id}`, {
                 title: todo.title,
