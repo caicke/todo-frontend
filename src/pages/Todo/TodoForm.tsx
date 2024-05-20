@@ -23,7 +23,15 @@ export function TodoFormPage() {
 
         const fetchTodo = async () => {
             try {
-                const response = await axios.get<ITodo>(`${process.env.REACT_APP_API_URL}/todos/${id}`);
+                const token = window.localStorage.getItem("MY_TOKEN");
+                if (!token)
+                    return;
+
+                const decoded = jwtDecode<IJwtUserToken>(token);
+
+                const response = await axios.get<ITodo>(`${process.env.REACT_APP_API_URL}/todos/${id}`,
+                    { headers: { "Authorization": `Bearer ${token}` } }
+                );
 
                 if (response.status === 200) {
                     setTitle(response.data.title);
@@ -58,15 +66,15 @@ export function TodoFormPage() {
 
         if (id) {
             // Edit existing todo
-            await editTodo(title, description, userId);
+            await editTodo(title, description, userId, token);
         }
         else {
             // Create new todo
-            await createTodo(title, description, userId)
+            await createTodo(title, description, userId, token)
         }
     }
 
-    async function editTodo(title: string, description: string, userId: string | undefined) {
+    async function editTodo(title: string, description: string, userId: string | undefined, token: string) {
         try {
             setIsLoading(true);
 
@@ -74,7 +82,8 @@ export function TodoFormPage() {
                 title: title,
                 description: description,
                 userId: userId
-            });
+            },
+                { headers: { "Authorization": `Bearer ${token}` } });
 
             if (response.status === 200) {
                 toast.success("Task updated successfully.");
@@ -88,7 +97,7 @@ export function TodoFormPage() {
         }
     }
 
-    async function createTodo(title: string, description: string, userId: string | undefined) {
+    async function createTodo(title: string, description: string, userId: string | undefined, token: string) {
         try {
             setIsLoading(true);
 
@@ -96,7 +105,8 @@ export function TodoFormPage() {
                 title: title,
                 description: description,
                 userId: userId
-            });
+            },
+                { headers: { "Authorization": `Bearer ${token}` } });
 
             if (response.status === 204) {
                 toast.success("Task created successfully.");

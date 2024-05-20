@@ -30,7 +30,8 @@ export function TodoListPage() {
                 const decoded = jwtDecode<IJwtUserToken>(token);
 
                 const userId = decoded.sub;
-                const response = await axios.get<ITodo[]>(`${process.env.REACT_APP_API_URL}/todos/from/${userId}`);
+                const response = await axios.get<ITodo[]>(`${process.env.REACT_APP_API_URL}/todos/from/${userId}`,
+                    { headers: { "Authorization": `Bearer ${token}` } });
 
                 if (response.status === 200) {
                     setTodos(response.data);
