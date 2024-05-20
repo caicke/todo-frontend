@@ -75,7 +75,8 @@ export function TodoListPage() {
                 description: todo.description,
                 userId: todo.userId,
                 isCompleted: !todo.isCompleted
-            });
+            },
+                { headers: { "Authorization": `Bearer ${token}` } });
 
             if (response.status === 200) {
                 setTodos((prevTodos) =>
