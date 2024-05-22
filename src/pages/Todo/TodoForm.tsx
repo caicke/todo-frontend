@@ -60,19 +60,20 @@ export function TodoFormPage() {
             return;
 
         const decoded = jwtDecode<IJwtUserToken>(token);
+
         const userId = (decoded.sub);
 
         if (id) {
             // Edit existing todo
-            await editTodo(title, description, userId, token);
+            await editTodo(title, description, userId);
         }
         else {
             // Create new todo
-            await createTodo(title, description, userId, token)
+            await createTodo(title, description, userId)
         }
     }
 
-    async function editTodo(title: string, description: string, userId: string | undefined, token: string) {
+    async function editTodo(title: string, description: string, userId: string | undefined) {
         try {
             setIsLoading(true);
 
@@ -94,7 +95,7 @@ export function TodoFormPage() {
         }
     }
 
-    async function createTodo(title: string, description: string, userId: string | undefined, token: string) {
+    async function createTodo(title: string, description: string, userId: string | undefined) {
         try {
             setIsLoading(true);
 
