@@ -165,7 +165,7 @@ export function TodoListPage() {
                                 onClick={() => handleEditClick(todo)}
                                 className="inline-flex items-center mt-2 px-2 py-1 border border-transparent text-xs font-medium rounded text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                                 title="Edit task"
-                                style={{ width: "20%" }}
+                                style={{ width: "4.5rem" }}
                             >
                                 <Icon>
                                     <EditIcon fontSize="small"></EditIcon>
