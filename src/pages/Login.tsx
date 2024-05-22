@@ -17,6 +17,7 @@ const authenticateUser = async (userData: IUserData, onSuccess: () => void, onEr
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/signin`, userData);
         if (response.status === 200) {
             localStorage.setItem("MY_TOKEN", response.data.access_token);
+            localStorage.setItem("REFRESH_TOKEN", response.data.refresh_token);
             onSuccess();
         } else {
             onError(response.data.message);
@@ -45,7 +46,6 @@ function LoginPage() {
     return (
         <>
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                <Toaster />
                 <Header
                     heading="Login to your account"
                     paragraph="Don't have an account yet? "

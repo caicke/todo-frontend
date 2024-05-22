@@ -6,11 +6,11 @@ import { IJwtUserToken } from "../../interfaces/IJwtUserToken";
 import { ITodo } from "../../interfaces/ITodo";
 import IconButton from '@mui/material/IconButton';
 import LogoutIcon from '@mui/icons-material/Logout';
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Header from "../../components/Header/Header";
 import toast, { Toaster } from "react-hot-toast";
 import { Icon } from "@mui/material";
+import api from "../../config/axiosConfig";
 
 export function TodoListPage() {
     const navigate = useNavigate();
@@ -30,7 +30,7 @@ export function TodoListPage() {
                 const decoded = jwtDecode<IJwtUserToken>(token);
 
                 const userId = decoded.sub;
-                const response = await axios.get<ITodo[]>(`${process.env.REACT_APP_API_URL}/todos/from/${userId}`,
+                const response = await api.get<ITodo[]>(`${process.env.REACT_APP_API_URL}/todos/from/${userId}`,
                     { headers: { "Authorization": `Bearer ${token}` } });
 
                 if (response.status === 200) {
@@ -118,8 +118,8 @@ export function TodoListPage() {
     };
 
     const handleLogout = () => {
-        // Lógica para logout
         window.localStorage.removeItem("MY_TOKEN");
+        window.localStorage.removeItem("REFRESH_TOKEN");
         navigate("/"); // Redirect to login page
     };
 
