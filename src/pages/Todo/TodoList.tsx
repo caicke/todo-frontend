@@ -1,4 +1,3 @@
-import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -30,8 +29,7 @@ export function TodoListPage() {
                 const decoded = jwtDecode<IJwtUserToken>(token);
 
                 const userId = decoded.sub;
-                const response = await api.get<ITodo[]>(`${process.env.REACT_APP_API_URL}/todos/from/${userId}`,
-                    { headers: { "Authorization": `Bearer ${token}` } });
+                const response = await api.get<ITodo[]>(`${process.env.REACT_APP_API_URL}/todos/from/${userId}`);
 
                 if (response.status === 200) {
                     setTodos(response.data);
@@ -74,13 +72,12 @@ export function TodoListPage() {
             return;
 
         try {
-            const response = await axios.put(`${process.env.REACT_APP_API_URL}/todos/${todo.id}`, {
+            const response = await api.put(`${process.env.REACT_APP_API_URL}/todos/${todo.id}`, {
                 title: todo.title,
                 description: todo.description,
                 userId: todo.userId,
                 isCompleted: !todo.isCompleted
-            },
-                { headers: { "Authorization": `Bearer ${token}` } });
+            });
 
             if (response.status === 200) {
                 setTodos((prevTodos) =>
@@ -103,7 +100,7 @@ export function TodoListPage() {
     const handleDeleteClick = async (todoId: string) => {
         setIsLoading(true);
         try {
-            const response = await axios.delete(`${process.env.REACT_APP_API_URL}/todos/${todoId}`);
+            const response = await api.delete(`${process.env.REACT_APP_API_URL}/todos/${todoId}`);
 
             if (response.status === 204) {
                 setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== todoId));
@@ -125,7 +122,6 @@ export function TodoListPage() {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <Toaster />
             <div className="flex justify-between items-center p-4">
                 <Header
                     heading={'Hello, ' + userName + '.'}

@@ -63,7 +63,6 @@ function SignUpPage() {
     return (
         <>
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                <Toaster />
                 <Header
                     heading="Create a new account"
                     paragraph="Already have an account? "

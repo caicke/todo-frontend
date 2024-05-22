@@ -4,10 +4,10 @@ import { FormEvent, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { IJwtUserToken } from "../../interfaces/IJwtUserToken";
 import toast, { Toaster } from "react-hot-toast";
-import axios from "axios";
 import { ITodo } from "../../interfaces/ITodo";
 import IconButton from '@mui/material/IconButton';
 import Close from '@mui/icons-material/Close';
+import api from "../../config/axiosConfig";
 
 export function TodoFormPage() {
 
@@ -29,9 +29,7 @@ export function TodoFormPage() {
 
                 const decoded = jwtDecode<IJwtUserToken>(token);
 
-                const response = await axios.get<ITodo>(`${process.env.REACT_APP_API_URL}/todos/${id}`,
-                    { headers: { "Authorization": `Bearer ${token}` } }
-                );
+                const response = await api.get<ITodo>(`${process.env.REACT_APP_API_URL}/todos/${id}`);
 
                 if (response.status === 200) {
                     setTitle(response.data.title);
@@ -78,12 +76,11 @@ export function TodoFormPage() {
         try {
             setIsLoading(true);
 
-            const response = await axios.put(`${process.env.REACT_APP_API_URL}/todos/${id}`, {
+            const response = await api.put(`${process.env.REACT_APP_API_URL}/todos/${id}`, {
                 title: title,
                 description: description,
                 userId: userId
-            },
-                { headers: { "Authorization": `Bearer ${token}` } });
+            });
 
             if (response.status === 200) {
                 toast.success("Task updated successfully.");
@@ -101,12 +98,11 @@ export function TodoFormPage() {
         try {
             setIsLoading(true);
 
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/todos`, {
+            const response = await api.post(`${process.env.REACT_APP_API_URL}/todos`, {
                 title: title,
                 description: description,
                 userId: userId
-            },
-                { headers: { "Authorization": `Bearer ${token}` } });
+            });
 
             if (response.status === 204) {
                 toast.success("Task created successfully.");
@@ -132,7 +128,6 @@ export function TodoFormPage() {
             </div>
 
             <form onSubmit={handleSubmit}>
-                <Toaster />
                 <div className="gap-x-6 py-5 bg-gray-100 shadow rounded-md px-4">
                     <InputComponent
                         id="todo-title"
